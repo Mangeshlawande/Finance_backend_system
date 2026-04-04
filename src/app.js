@@ -1,10 +1,10 @@
 // import dotenv from "dotenv";
-import express from 'express'
+import express from 'express';
 import { ApiError } from '#utils/ApiError.js';
 import { ApiResponse } from '#utils/ApiResponse.js';
-import authRoutes from "#routes/auth.routes.js"
-import userRoutes from "#routes/user.routes.js"
-
+import authRoutes from "#routes/auth.routes.js";
+import userRoutes from "#routes/user.routes.js";
+import recordRoutes from "#routes/records.routes.js";
 
 // dotenv.config({
 //   path: "./.env",
@@ -31,7 +31,8 @@ app.get('/health', (req, res) =>
 
 
 app.use('/api/auth', authRoutes);
-app.use('/api/users',     userRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/records', recordRoutes)
 
 
 
@@ -39,5 +40,6 @@ app.use('/api/users',     userRoutes);
 app.use((req, res) => {
     res.status(404).json(new ApiError(404, 'Route not found'));
 });
+
 
 export default app;
