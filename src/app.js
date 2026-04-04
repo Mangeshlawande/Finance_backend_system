@@ -6,6 +6,10 @@ import authRoutes from "#routes/auth.routes.js";
 import userRoutes from "#routes/user.routes.js";
 import recordRoutes from "#routes/records.routes.js";
 import dashboardRoutes from "#routes/dashboard.routes.js";
+import helmet from 'helmet';
+import cors from 'cors'
+import cookieParser from 'cookie-parser';
+import morgan from 'morgan';
 
 // dotenv.config({
 //   path: "./.env",
@@ -55,23 +59,23 @@ app.use((req, res) => {
 // ── Global error handler ───────────────────────────────────────────────────
 // Catches both ApiError (thrown intentionally) and unexpected errors.
 app.use((err, req, res, _next) => {
-  logger.error(err.message, { stack: err.stack });
+    logger.error(err.message, { stack: err.stack });
 
-  if (err instanceof ApiError) {
-    return res.status(err.statusCode).json({
-      success:    false,
-      statusCode: err.statusCode,
-      message:    err.message,
-      details:    err.details,
+    if (err instanceof ApiError) {
+        return res.status(err.statusCode).json({
+            success: false,
+            statusCode: err.statusCode,
+            message: err.message,
+            details: err.details,
+        });
+    }
+
+    res.status(500).json({
+        success: false,
+        statusCode: 500,
+        message: 'Internal server error',
+        details: [],
     });
-  }
-
-  res.status(500).json({
-    success:    false,
-    statusCode: 500,
-    message:    'Internal server error',
-    details:    [],
-  });
 });
 
 
