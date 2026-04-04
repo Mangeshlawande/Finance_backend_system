@@ -1,9 +1,11 @@
 import 'dotenv/config';
-import pg from 'pg';
-import { drizzle } from 'drizzle-orm/node-postgres';
+import { neon, } from "@neondatabase/serverless";
+import { drizzle } from "drizzle-orm/neon-http";
 
-const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL });
 
-const db = drizzle(pool);
+const sql = neon(process.env.DATABASE_URL);
+const db = drizzle(sql);
 
-export { db };
+export { db, sql };
+
+
