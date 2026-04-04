@@ -3,7 +3,7 @@ import express from 'express'
 import { ApiError } from '#utils/ApiError.js';
 import { ApiResponse } from '#utils/ApiResponse.js';
 import authRoutes from "#routes/auth.routes.js"
-
+import userRoutes from "#routes/user.routes.js"
 
 
 // dotenv.config({
@@ -31,6 +31,8 @@ app.get('/health', (req, res) =>
 
 
 app.use('/api/auth', authRoutes);
+app.use('/api/users',     userRoutes);
+
 
 
 // ── 404 ────────────────────────────────────────────────────────────────────
