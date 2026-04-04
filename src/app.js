@@ -10,6 +10,8 @@ import helmet from 'helmet';
 import cors from 'cors'
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
+import logger from '#config/logger.js';
+
 
 // dotenv.config({
 //   path: "./.env",

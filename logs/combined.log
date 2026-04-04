@@ -1,0 +1,2 @@
+{"level":"info","message":"::1 - - [04/Apr/2026:17:59:52 +0000] \"GET / HTTP/1.1\" 304 - \"-\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36\"","service":"finance-api","timestamp":"2026-04-04T17:59:52.819Z"}
+{"level":"info","message":"::1 - - [04/Apr/2026:18:00:13 +0000] \"GET /health HTTP/1.1\" 200 148 \"-\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36\"","service":"finance-api","timestamp":"2026-04-04T18:00:13.482Z"}
