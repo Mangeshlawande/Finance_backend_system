@@ -5,12 +5,23 @@ import { ApiResponse } from '#utils/ApiResponse.js';
 import authRoutes from "#routes/auth.routes.js";
 import userRoutes from "#routes/user.routes.js";
 import recordRoutes from "#routes/records.routes.js";
+import dashboardRoutes from "#routes/dashboard.routes.js";
 
 // dotenv.config({
 //   path: "./.env",
 // });
 
 const app = express()
+
+
+// ── Core middleware ────────────────────────────────────────────────────────
+app.use(helmet());
+app.use(cors({ origin: process.env.CORS_ORIGIN || 'http://localhost:5173', credentials: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(morgan('combined', { stream: { write: msg => logger.info(msg.trim()) } }));
+
 
 app.get('/', (req, res) => {
     res.status(200).send("The Finance Backend System!")
@@ -33,12 +44,34 @@ app.get('/health', (req, res) =>
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/records', recordRoutes)
-
+app.use('/api/dashboard', dashboardRoutes)
 
 
 // ── 404 ────────────────────────────────────────────────────────────────────
 app.use((req, res) => {
     res.status(404).json(new ApiError(404, 'Route not found'));
+});
+
+// ── Global error handler ───────────────────────────────────────────────────
+// Catches both ApiError (thrown intentionally) and unexpected errors.
+app.use((err, req, res, _next) => {
+  logger.error(err.message, { stack: err.stack });
+
+  if (err instanceof ApiError) {
+    return res.status(err.statusCode).json({
+      success:    false,
+      statusCode: err.statusCode,
+      message:    err.message,
+      details:    err.details,
+    });
+  }
+
+  res.status(500).json({
+    success:    false,
+    statusCode: 500,
+    message:    'Internal server error',
+    details:    [],
+  });
 });
 
 
