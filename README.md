@@ -852,3 +852,7 @@ All errors follow this shape:
 11. **Change password** via `POST /auth/change-password`
 12. **Logout** via `POST /auth/logout`
 
+
+
+## Postman Collection
+link to Postman collection: [Finance Backend API.postman_collection.json](https://mangeshlawande511-6208082.postman.co/workspace/BackendDevMangesh's-Workspace~851b0605-d012-4812-889d-b03925aed595/collection/53762344-f95947ea-41e8-43e6-aa16-a4474d427c0e?action=share&source=copy-link&creator=53762344)
