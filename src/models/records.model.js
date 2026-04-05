@@ -1,4 +1,4 @@
-import { pgTable, serial, timestamp, varchar, numeric, boolean, integer } from 'drizzle-orm/pg-core';
+import { pgTable, serial, timestamp, varchar, numeric, boolean, integer, uuid } from 'drizzle-orm/pg-core';
 
 export const records = pgTable('records', {
     id: serial('id').primaryKey(),
@@ -10,7 +10,7 @@ export const records = pgTable('records', {
     category: varchar('category', { length: 50 }).notNull().default('other'),
     date: timestamp('date').notNull().defaultNow(),
     description: varchar('description', { length: 500 }),
-    created_by: integer('created_by').notNull(),   // FK → users.id
+    created_by: uuid('created_by').notNull(),   // FK → users.id
     is_deleted: boolean('is_deleted').notNull().default(false),
     deleted_at: timestamp('deleted_at'),
     created_at: timestamp('created_at').defaultNow().notNull(),

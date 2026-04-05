@@ -46,6 +46,7 @@ export const getMe = (req, res) => {
     res.status(200).json(new ApiResponse(200, { user: req.user }, 'Current user fetched'));
 };
 
+
 export const changePassword = asyncHandler(async (req, res) => {
     const result = changePasswordSchema.safeParse(req.body);
     if (!result.success) throw new ApiError(400, 'Validation failed', formatValidationError(result.error));

@@ -7,12 +7,12 @@ const router = Router();
 router.use(authenticateToken);
 
 // Admin + analyst: read records
-router.get('/', requireRole('admin', 'analyst'), fetchAllRecords);
-router.get('/:id', requireRole('admin', 'analyst'), fetchRecordById);
+router.get('/get-records', requireRole('admin', 'analyst'), fetchAllRecords);//
+router.get('/recordby-id/:id', requireRole('admin', 'analyst'), fetchRecordById); //
 
 // Admin only: write records
-router.post('/', requireRole('admin'), createNewRecord);
-router.put('/:id', requireRole('admin'), updateRecordById);
-router.delete('/:id', requireRole('admin'), deleteRecordById);
+router.post('/create-record', requireRole('admin'), createNewRecord);//
+router.put('/update-record/:id', requireRole('admin'), updateRecordById); //
+router.delete('/delete-record/:id', requireRole('admin'), deleteRecordById); // 
 
 export default router;

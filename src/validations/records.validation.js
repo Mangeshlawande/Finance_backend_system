@@ -34,8 +34,6 @@ export const recordQuerySchema = z.object({
 });
 
 export const recordIdSchema = z.object({
-    id: z.string()
-        .regex(/^\d+$/, 'ID must be a number')
-        .transform(Number)
-        .refine(v => v > 0, 'ID must be positive'),
+    id: z.string(),
+        
 });
