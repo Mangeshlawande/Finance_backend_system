@@ -12,17 +12,25 @@ export const comparePassword = (plain, hash) => bcrypt.compare(plain, hash);
 
 
 export const createUser = async ({ name, email, password, role = 'viewer' }) => {
-    const [existing] = await db.select().from(users).where(eq(users.email, email)).limit(1);
-    if (existing) throw new ApiError(409, 'Email already registered');
-
-    const hashed = await hashPassword(password);
-    const [user] = await db
-        .insert(users)
-        .values({ name, email, password: hashed, role })
-        .returning({ id: users.id, name: users.name, email: users.email, role: users.role });
-
-    logger.info(`User created: ${user.email}`);
-    return user;
+    
+    try {
+        const [existing] = await db.select().from(users).where(eq(users.email, email)).limit(1);
+        if (existing) throw new ApiError(409, 'Email already registered');
+    
+        const hashed = await hashPassword(password);
+        const [user] = await db
+            .insert(users)
+            .values({ name, email, password: hashed, role })
+            .returning({ id: users.id, name: users.name, email: users.email, role: users.role });
+    
+        logger.info(`User created: ${user.email}`);
+        return user;
+    } catch (error) {
+        throw new ApiError(
+      502,
+      "Something went wrong while creating user!!",
+    );
+    }
 };
 
 

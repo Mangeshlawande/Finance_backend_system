@@ -26,18 +26,34 @@ export const fetchAllRecords = asyncHandler(async (req, res) => {
 export const fetchRecordById = asyncHandler(async (req, res) => {
     const parsed = recordIdSchema.safeParse({ id: req.params.id });
     if (!parsed.success) throw new ApiError(400, 'Validation failed', formatValidationError(parsed.error));
+    try {
 
-    const record = await getRecordById(parsed.data.id);
-    res.json(new ApiResponse(200, { record }, 'Record retrieved'));
+        const record = await getRecordById(parsed.data.id);
+        res.json(new ApiResponse(200, { record }, 'Record retrieved'));
+
+    } catch (error) {
+        throw new ApiError(
+            502,
+            "Something went wrong while getting Records !!",
+        );
+    }
 });
 
 export const createNewRecord = asyncHandler(async (req, res) => {
     const parsed = createRecordSchema.safeParse(req.body);
     if (!parsed.success) throw new ApiError(400, 'Validation failed', formatValidationError(parsed.error));
+    try {
 
-    const record = await createRecord({ ...parsed.data, created_by: req.user.id });
-    logger.info(`Record ${record.id} created by ${req.user.email}`);
-    res.status(201).json(new ApiResponse(201, { record }, 'Record created'));
+        const record = await createRecord({ ...parsed.data, created_by: req.user.id });
+        logger.info(`Record ${record.id} created by ${req.user.email}`);
+        res.status(201).json(new ApiResponse(201, { record }, 'Record created'));
+
+    } catch (error) {
+        throw new ApiError(
+            503,
+            "Something went wrong while Creating Records !!",
+        );
+    }
 });
 
 export const updateRecordById = asyncHandler(async (req, res) => {
@@ -47,16 +63,34 @@ export const updateRecordById = asyncHandler(async (req, res) => {
     const bodyParsed = updateRecordSchema.safeParse(req.body);
     if (!bodyParsed.success) throw new ApiError(400, 'Validation failed', formatValidationError(bodyParsed.error));
 
-    const record = await updateRecord(idParsed.data.id, bodyParsed.data);
-    logger.info(`Record ${idParsed.data.id} updated by ${req.user.email}`);
-    res.json(new ApiResponse(200, { record }, 'Record updated'));
+    try {
+
+        const record = await updateRecord(idParsed.data.id, bodyParsed.data);
+        logger.info(`Record ${idParsed.data.id} updated by ${req.user.email}`);
+        res.json(new ApiResponse(200, { record }, 'Record updated'));
+
+    } catch (error) {
+        throw new ApiError(
+            505,
+            "Something went wrong while Updating Records !!",
+        );
+    }
 });
 
 export const deleteRecordById = asyncHandler(async (req, res) => {
     const parsed = recordIdSchema.safeParse({ id: req.params.id });
     if (!parsed.success) throw new ApiError(400, 'Validation failed', formatValidationError(parsed.error));
 
-    await softDeleteRecord(parsed.data.id);
-    logger.info(`Record ${parsed.data.id} deleted by ${req.user.email}`);
-    res.json(new ApiResponse(200, {}, 'Record deleted'));
+    try {
+
+        await softDeleteRecord(parsed.data.id);
+        logger.info(`Record ${parsed.data.id} deleted by ${req.user.email}`);
+        res.json(new ApiResponse(200, {}, 'Record deleted'));
+
+    } catch (error) {
+        throw new ApiError(
+            503,
+            "Something went wrong while Deleting Records !!",
+        );
+    }
 });
