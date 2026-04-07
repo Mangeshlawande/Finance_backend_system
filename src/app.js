@@ -38,7 +38,7 @@ app.get('/', (req, res) => {
 
 
 
-app.get('/api/health', (req, res) =>
+app.get('/api/v1/health', (req, res) =>
     res.json(new ApiResponse(200, {
         status: 'OK',
         timestamp: new Date().toISOString(),
@@ -47,10 +47,10 @@ app.get('/api/health', (req, res) =>
 );
 
 
-app.use('/api/auth', authRoutes);//work
-app.use('/api/users', userRoutes);//work
-app.use('/api/records', recordRoutes);//work
-app.use('/api/dashboard', dashboardRoutes);//work
+app.use('/api/v1/auth', authRoutes);//work
+app.use('/api/v1/users', userRoutes);//work
+app.use('/api/v1/records', recordRoutes);//work
+app.use('/api/v1/dashboard', dashboardRoutes);//work
 
 
 // ── 404 ────────────────────────────────────────────────────────────────────

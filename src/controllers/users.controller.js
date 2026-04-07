@@ -17,7 +17,7 @@ export const fetchAllUsers = asyncHandler(async (req, res) => {
     } catch (error) {
         throw new ApiError(
             501,
-            "Something went wrong while getting users !!",
+            error || "Something went wrong while getting users !!",
         );
     }
 });
@@ -33,7 +33,7 @@ export const fetchUserById = asyncHandler(async (req, res) => {
     } catch (error) {
         throw new ApiError(
             506,
-            "Something went wrong while getting user !!",
+            error || "Something went wrong while getting user !!",
         );
     }
 });
@@ -63,7 +63,7 @@ export const updateUserById = asyncHandler(async (req, res) => {
     } catch (error) {
         throw new ApiError(
             504,
-            "Something went wrong while updating user !!",
+            error || "Something went wrong while updating user !!",
         );
     }
 });
@@ -83,7 +83,7 @@ export const deleteUserById = asyncHandler(async (req, res) => {
     } catch (error) {
         throw new ApiError(
             505,
-            "Something went wrong while deleting user !!",
+            error || "Something went wrong while deleting user !!",
         );
     }
 });

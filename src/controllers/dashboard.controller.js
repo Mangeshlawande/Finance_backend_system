@@ -11,7 +11,7 @@ export const fetchSummary = asyncHandler(async (req, res) => {
   } catch (error) {
     throw new ApiError(
       504,
-      "Internal server Error !",
+      error || "Internal server Error !",
     );
   }
 });
@@ -24,7 +24,7 @@ export const fetchCategoryBreakdown = asyncHandler(async (req, res) => {
   } catch (error) {
     throw new ApiError(
       502,
-      "Something went wrong while getting category",
+      error || "Something went wrong while getting category",
     );
   }
 });
@@ -37,7 +37,7 @@ export const fetchMonthlyTrends = asyncHandler(async (req, res) => {
   } catch (error) {
     throw new ApiError(
       503,
-      "Something went while getting Monthly trends !",
+      error || "Something went while getting Monthly trends !",
     );
   }
 });
@@ -51,7 +51,7 @@ export const fetchWeeklyTrends = asyncHandler(async (req, res) => {
   } catch (error) {
     throw new ApiError(
       500,
-      "Interal Server Error !! ",
+      error || "Interal Server Error !! ",
     );
   }
 });
@@ -65,7 +65,7 @@ export const fetchRecentActivity = asyncHandler(async (req, res) => {
   } catch (error) {
     throw new ApiError(
       505,
-      "Something went wrong while getting Recent Activity ",
+      error || "Something went wrong while getting Recent Activity ",
     );
   }
 });

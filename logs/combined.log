@@ -188,3 +188,110 @@ id%20:%200bdcbd37-a8f9-49e2-be86-6221bb42ae85 HTTP/1.1\" 400 96 \"-\" \"PostmanR
 {"level":"info","message":"::1 - - [05/Apr/2026:10:27:47 +0000] \"GET /api/dashboard/monthly-trends HTTP/1.1\" 200 531 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-05T10:27:47.837Z"}
 {"level":"info","message":"Authenticated: master@example.com [admin]","service":"finance-api","timestamp":"2026-04-05T10:29:05.197Z"}
 {"level":"info","message":"::1 - - [05/Apr/2026:10:29:06 +0000] \"GET /api/dashboard/recent-activity HTTP/1.1\" 200 796 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-05T10:29:06.271Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:13:15:25 +0000] \"GET /health HTTP/1.1\" 404 47 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T13:15:25.634Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:13:15:56 +0000] \"GET /api/health HTTP/1.1\" 200 148 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T13:15:56.936Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:13:16:31 +0000] \"GET /api/v1/health HTTP/1.1\" 200 148 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T13:16:31.333Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:13:17:56 +0000] \"GET /api/v1/health HTTP/1.1\" 200 148 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T13:17:56.253Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:13:19:06 +0000] \"GET /api/v1/health HTTP/1.1\" 200 149 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T13:19:06.060Z"}
+{"level":"error","message":"Something went wrong ","service":"finance-api","stack":"Error: Something went wrong \n    at file:///home/mangesh/Desktop/finance_system/src/controllers/auth.controller.js:47:15\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)","timestamp":"2026-04-07T13:24:30.253Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:13:24:30 +0000] \"POST /api/v1/auth/sign-in HTTP/1.1\" 501 81 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T13:24:30.256Z"}
+{"level":"error","message":"[object Object]","service":"finance-api","stack":"Error: [object Object]\n    at file:///home/mangesh/Desktop/finance_system/src/controllers/auth.controller.js:47:15\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)","timestamp":"2026-04-07T13:27:01.481Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:13:27:01 +0000] \"POST /api/v1/auth/sign-in HTTP/1.1\" 501 75 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T13:27:01.497Z"}
+{"level":"error","message":"Error: User not found","service":"finance-api","stack":"Error: Error: User not found\n    at file:///home/mangesh/Desktop/finance_system/src/controllers/auth.controller.js:47:15\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)","timestamp":"2026-04-07T13:27:42.626Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:13:27:42 +0000] \"POST /api/v1/auth/sign-in HTTP/1.1\" 501 81 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T13:27:42.641Z"}
+{"level":"info","message":"User created: lime@example.com","service":"finance-api","timestamp":"2026-04-07T13:34:18.266Z"}
+{"level":"info","message":"signup: lime@example.com","service":"finance-api","timestamp":"2026-04-07T13:34:18.276Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:13:34:18 +0000] \"POST /api/v1/auth/sign-up HTTP/1.1\" 201 194 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T13:34:18.288Z"}
+{"level":"info","message":"User authenticated: lime@example.com","service":"finance-api","timestamp":"2026-04-07T13:35:21.229Z"}
+{"level":"info","message":"signin: lime@example.com","service":"finance-api","timestamp":"2026-04-07T13:35:21.237Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:13:35:21 +0000] \"POST /api/v1/auth/sign-in HTTP/1.1\" 200 285 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T13:35:21.241Z"}
+{"level":"info","message":"Authenticated: lime@example.com [analyst]","service":"finance-api","timestamp":"2026-04-07T13:37:11.389Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:13:37:11 +0000] \"GET /api/v1/auth/me HTTP/1.1\" 200 206 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T13:37:11.393Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:13:37:46 +0000] \"POST /api/v1/auth/sign-out HTTP/1.1\" 200 79 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T13:37:46.823Z"}
+{"level":"info","message":"User authenticated: master@example.com","service":"finance-api","timestamp":"2026-04-07T13:38:52.560Z"}
+{"level":"info","message":"signin: master@example.com","service":"finance-api","timestamp":"2026-04-07T13:38:52.564Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:13:38:52 +0000] \"POST /api/v1/auth/sign-in HTTP/1.1\" 200 287 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T13:38:52.566Z"}
+{"level":"info","message":"Authenticated: master@example.com [admin]","service":"finance-api","timestamp":"2026-04-07T13:40:24.740Z"}
+{"level":"info","message":"Password changed for user 48d7442e-9c4a-4aab-a0d9-6cec13a04413","service":"finance-api","timestamp":"2026-04-07T13:40:27.111Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:13:40:27 +0000] \"POST /api/v1/auth/change-password HTTP/1.1\" 200 85 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T13:40:27.112Z"}
+{"level":"info","message":"Authenticated: master@example.com [admin]","service":"finance-api","timestamp":"2026-04-07T13:40:50.434Z"}
+{"level":"error","message":"Error: Old password is incorrect","service":"finance-api","stack":"Error: Error: Old password is incorrect\n    at file:///home/mangesh/Desktop/finance_system/src/controllers/auth.controller.js:73:15","timestamp":"2026-04-07T13:40:51.648Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:13:40:51 +0000] \"POST /api/v1/auth/change-password HTTP/1.1\" 502 92 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T13:40:51.650Z"}
+{"level":"info","message":"Authenticated: master@example.com [admin]","service":"finance-api","timestamp":"2026-04-07T13:42:53.585Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:13:42:55 +0000] \"GET /api/v1/users/ HTTP/1.1\" 200 1317 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T13:42:55.717Z"}
+{"level":"info","message":"Authenticated: master@example.com [admin]","service":"finance-api","timestamp":"2026-04-07T13:44:33.202Z"}
+{"level":"info","message":"User apple@example.com updated","service":"finance-api","timestamp":"2026-04-07T13:44:39.244Z"}
+{"level":"info","message":"User 63101b53-b359-4298-9fbe-5adde21d71c0 updated by master@example.com","service":"finance-api","timestamp":"2026-04-07T13:44:39.244Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:13:44:39 +0000] \"PUT /api/v1/users/63101b53-b359-4298-9fbe-5adde21d71c0 HTTP/1.1\" 200 276 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T13:44:39.247Z"}
+{"level":"info","message":"Authenticated: master@example.com [admin]","service":"finance-api","timestamp":"2026-04-07T13:45:47.074Z"}
+{"level":"info","message":"User apple@example.com deleted","service":"finance-api","timestamp":"2026-04-07T13:45:53.183Z"}
+{"level":"info","message":"User 63101b53-b359-4298-9fbe-5adde21d71c0 deleted by master@example.com","service":"finance-api","timestamp":"2026-04-07T13:45:53.185Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:13:45:53 +0000] \"DELETE /api/v1/users/63101b53-b359-4298-9fbe-5adde21d71c0 HTTP/1.1\" 200 148 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T13:45:53.195Z"}
+{"level":"info","message":"Authenticated: master@example.com [admin]","service":"finance-api","timestamp":"2026-04-07T13:47:50.746Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:13:47:53 +0000] \"GET /api/v1/users/ HTTP/1.1\" 200 1110 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T13:47:53.384Z"}
+{"level":"info","message":"Authenticated: master@example.com [admin]","service":"finance-api","timestamp":"2026-04-07T13:48:17.726Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:13:48:20 +0000] \"GET /api/v1/users/ HTTP/1.1\" 200 1110 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T13:48:20.403Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:13:50:22 +0000] \"GET /api/v1/user-id/349479e7-d460-4f4a-b826-46893ae70aea HTTP/1.1\" 404 47 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T13:50:22.513Z"}
+{"level":"info","message":"Authenticated: master@example.com [admin]","service":"finance-api","timestamp":"2026-04-07T13:52:41.349Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:13:52:43 +0000] \"GET /api/v1/users/user-id/349479e7-d460-4f4a-b826-46893ae70aea HTTP/1.1\" 200 284 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T13:52:43.510Z"}
+{"level":"info","message":"Authenticated: master@example.com [admin]","service":"finance-api","timestamp":"2026-04-07T13:56:32.499Z"}
+{"level":"error","message":"Error: User not found","service":"finance-api","stack":"Error: Error: User not found\n    at file:///home/mangesh/Desktop/finance_system/src/controllers/users.controller.js:84:15\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)","timestamp":"2026-04-07T13:56:35.307Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:13:56:35 +0000] \"DELETE /api/v1/users/user-id/63101b53-b359-4298-9fbe-5adde21d71c0 HTTP/1.1\" 505 81 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T13:56:35.310Z"}
+{"level":"info","message":"Authenticated: master@example.com [admin]","service":"finance-api","timestamp":"2026-04-07T13:57:14.127Z"}
+{"level":"error","message":"Error: User not found","service":"finance-api","stack":"Error: Error: User not found\n    at file:///home/mangesh/Desktop/finance_system/src/controllers/users.controller.js:64:15\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)","timestamp":"2026-04-07T13:57:15.289Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:13:57:15 +0000] \"PUT /api/v1/users/user-id/63101b53-b359-4298-9fbe-5adde21d71c0 HTTP/1.1\" 504 81 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T13:57:15.293Z"}
+{"level":"info","message":"Authenticated: master@example.com [admin]","service":"finance-api","timestamp":"2026-04-07T13:57:30.236Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:13:57:32 +0000] \"GET /api/v1/users/ HTTP/1.1\" 200 1110 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T13:57:32.669Z"}
+{"level":"info","message":"User created: apple@example.com","service":"finance-api","timestamp":"2026-04-07T13:58:46.407Z"}
+{"level":"info","message":"signup: apple@example.com","service":"finance-api","timestamp":"2026-04-07T13:58:46.413Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:13:58:46 +0000] \"POST /api/v1/auth/sign-up HTTP/1.1\" 201 195 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T13:58:46.415Z"}
+{"level":"info","message":"Authenticated: apple@example.com [viewer]","service":"finance-api","timestamp":"2026-04-07T13:58:58.941Z"}
+{"level":"warn","message":"Access denied: apple@example.com (viewer) needs [admin]","service":"finance-api","timestamp":"2026-04-07T13:58:58.941Z"}
+{"level":"error","message":"Access denied: requires one of [admin]","service":"finance-api","stack":"Error: Access denied: requires one of [admin]\n    at file:///home/mangesh/Desktop/finance_system/src/middleware/auth.middleware.js:22:21\n    at Layer.handleRequest (/home/mangesh/Desktop/finance_system/node_modules/router/lib/layer.js:152:17)\n    at next (/home/mangesh/Desktop/finance_system/node_modules/router/lib/route.js:157:13)\n    at Route.dispatch (/home/mangesh/Desktop/finance_system/node_modules/router/lib/route.js:117:3)\n    at handle (/home/mangesh/Desktop/finance_system/node_modules/router/index.js:435:11)\n    at Layer.handleRequest (/home/mangesh/Desktop/finance_system/node_modules/router/lib/layer.js:152:17)\n    at /home/mangesh/Desktop/finance_system/node_modules/router/index.js:295:15\n    at processParams (/home/mangesh/Desktop/finance_system/node_modules/router/index.js:582:12)\n    at next (/home/mangesh/Desktop/finance_system/node_modules/router/index.js:291:5)\n    at authenticateToken (file:///home/mangesh/Desktop/finance_system/src/middleware/auth.middleware.js:12:9)","timestamp":"2026-04-07T13:58:58.942Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:13:58:58 +0000] \"GET /api/v1/users/ HTTP/1.1\" 403 98 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T13:58:58.945Z"}
+{"level":"info","message":"Authenticated: apple@example.com [viewer]","service":"finance-api","timestamp":"2026-04-07T13:59:05.079Z"}
+{"level":"warn","message":"Access denied: apple@example.com (viewer) needs [admin]","service":"finance-api","timestamp":"2026-04-07T13:59:05.079Z"}
+{"level":"error","message":"Access denied: requires one of [admin]","service":"finance-api","stack":"Error: Access denied: requires one of [admin]\n    at file:///home/mangesh/Desktop/finance_system/src/middleware/auth.middleware.js:22:21\n    at Layer.handleRequest (/home/mangesh/Desktop/finance_system/node_modules/router/lib/layer.js:152:17)\n    at next (/home/mangesh/Desktop/finance_system/node_modules/router/lib/route.js:157:13)\n    at Route.dispatch (/home/mangesh/Desktop/finance_system/node_modules/router/lib/route.js:117:3)\n    at handle (/home/mangesh/Desktop/finance_system/node_modules/router/index.js:435:11)\n    at Layer.handleRequest (/home/mangesh/Desktop/finance_system/node_modules/router/lib/layer.js:152:17)\n    at /home/mangesh/Desktop/finance_system/node_modules/router/index.js:295:15\n    at processParams (/home/mangesh/Desktop/finance_system/node_modules/router/index.js:582:12)\n    at next (/home/mangesh/Desktop/finance_system/node_modules/router/index.js:291:5)\n    at authenticateToken (file:///home/mangesh/Desktop/finance_system/src/middleware/auth.middleware.js:12:9)","timestamp":"2026-04-07T13:59:05.080Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:13:59:05 +0000] \"GET /api/v1/users/ HTTP/1.1\" 403 98 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T13:59:05.082Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:13:59:20 +0000] \"POST /api/v1/auth/sign-out HTTP/1.1\" 200 79 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T13:59:20.287Z"}
+{"level":"info","message":"User authenticated: master@example.com","service":"finance-api","timestamp":"2026-04-07T13:59:40.790Z"}
+{"level":"info","message":"signin: master@example.com","service":"finance-api","timestamp":"2026-04-07T13:59:40.793Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:13:59:40 +0000] \"POST /api/v1/auth/sign-in HTTP/1.1\" 200 287 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T13:59:40.794Z"}
+{"level":"info","message":"Authenticated: master@example.com [admin]","service":"finance-api","timestamp":"2026-04-07T13:59:50.967Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:13:59:53 +0000] \"GET /api/v1/users/ HTTP/1.1\" 200 1312 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T13:59:53.690Z"}
+{"level":"info","message":"Authenticated: master@example.com [admin]","service":"finance-api","timestamp":"2026-04-07T14:01:07.667Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:14:01:12 +0000] \"GET /api/v1/records/get-records/ HTTP/1.1\" 200 1240 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T14:01:12.027Z"}
+{"level":"info","message":"Authenticated: master@example.com [admin]","service":"finance-api","timestamp":"2026-04-07T14:04:09.876Z"}
+{"level":"info","message":"Record created: id=6 type=income amount=8000","service":"finance-api","timestamp":"2026-04-07T14:04:12.245Z"}
+{"level":"info","message":"Record 6 created by master@example.com","service":"finance-api","timestamp":"2026-04-07T14:04:12.246Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:14:04:12 +0000] \"POST /api/v1/records/create-record/ HTTP/1.1\" 201 350 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T14:04:12.249Z"}
+{"level":"info","message":"Authenticated: master@example.com [admin]","service":"finance-api","timestamp":"2026-04-07T14:04:33.990Z"}
+{"level":"info","message":"Record created: id=7 type=income amount=8000","service":"finance-api","timestamp":"2026-04-07T14:04:36.410Z"}
+{"level":"info","message":"Record 7 created by master@example.com","service":"finance-api","timestamp":"2026-04-07T14:04:36.411Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:14:04:36 +0000] \"POST /api/v1/records/create-record/ HTTP/1.1\" 201 350 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T14:04:36.414Z"}
+{"level":"info","message":"Authenticated: master@example.com [admin]","service":"finance-api","timestamp":"2026-04-07T14:05:10.055Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:14:05:15 +0000] \"GET /api/v1/records/get-records/ HTTP/1.1\" 200 1784 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T14:05:15.539Z"}
+{"level":"info","message":"Authenticated: master@example.com [admin]","service":"finance-api","timestamp":"2026-04-07T14:09:21.647Z"}
+{"level":"info","message":"Record updated: id=7","service":"finance-api","timestamp":"2026-04-07T14:09:25.230Z"}
+{"level":"info","message":"Record 7 updated by master@example.com","service":"finance-api","timestamp":"2026-04-07T14:09:25.233Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:14:09:25 +0000] \"PUT /api/v1/records/update-record/7 HTTP/1.1\" 200 346 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T14:09:25.236Z"}
+{"level":"info","message":"Authenticated: master@example.com [admin]","service":"finance-api","timestamp":"2026-04-07T14:09:43.354Z"}
+{"level":"info","message":"Record updated: id=7","service":"finance-api","timestamp":"2026-04-07T14:09:47.139Z"}
+{"level":"info","message":"Record 7 updated by master@example.com","service":"finance-api","timestamp":"2026-04-07T14:09:47.139Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:14:09:47 +0000] \"PUT /api/v1/records/update-record/7 HTTP/1.1\" 200 346 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T14:09:47.140Z"}
+{"level":"info","message":"Authenticated: master@example.com [admin]","service":"finance-api","timestamp":"2026-04-07T14:10:38.313Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:14:10:43 +0000] \"GET /api/v1/records/get-records/ HTTP/1.1\" 200 1780 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T14:10:43.869Z"}
+{"level":"info","message":"Authenticated: master@example.com [admin]","service":"finance-api","timestamp":"2026-04-07T14:12:22.257Z"}
+{"level":"info","message":"Record soft-deleted: id=5","service":"finance-api","timestamp":"2026-04-07T14:12:27.493Z"}
+{"level":"info","message":"Record 5 deleted by master@example.com","service":"finance-api","timestamp":"2026-04-07T14:12:27.493Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:14:12:27 +0000] \"DELETE /api/v1/records/delete-record/5 HTTP/1.1\" 200 70 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T14:12:27.495Z"}
+{"level":"info","message":"Authenticated: master@example.com [admin]","service":"finance-api","timestamp":"2026-04-07T14:13:28.143Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:14:13:30 +0000] \"GET /api/v1/records/recordby-id/6 HTTP/1.1\" 200 352 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T14:13:30.985Z"}
+{"level":"info","message":"Authenticated: master@example.com [admin]","service":"finance-api","timestamp":"2026-04-07T14:15:07.561Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:14:15:09 +0000] \"GET /api/v1/dashboard/summary HTTP/1.1\" 200 147 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T14:15:09.948Z"}
+{"level":"info","message":"Authenticated: master@example.com [admin]","service":"finance-api","timestamp":"2026-04-07T14:16:45.514Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:14:16:47 +0000] \"GET /api/v1/dashboard/category-breakdown HTTP/1.1\" 200 417 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T14:16:47.621Z"}
+{"level":"info","message":"Authenticated: master@example.com [admin]","service":"finance-api","timestamp":"2026-04-07T14:17:25.376Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:14:17:27 +0000] \"GET /api/v1/dashboard/monthly-trends HTTP/1.1\" 200 532 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T14:17:27.991Z"}
+{"level":"info","message":"Authenticated: master@example.com [admin]","service":"finance-api","timestamp":"2026-04-07T14:21:23.681Z"}
+{"level":"info","message":"::1 - - [07/Apr/2026:14:21:26 +0000] \"GET /api/v1/dashboard/recent-activity HTTP/1.1\" 200 974 \"-\" \"PostmanRuntime/7.49.1\"","service":"finance-api","timestamp":"2026-04-07T14:21:26.375Z"}

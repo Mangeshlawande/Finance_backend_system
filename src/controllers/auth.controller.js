@@ -25,7 +25,7 @@ export const signup = asyncHandler(async (req, res) => {
     } catch (error) {
         throw new ApiError(
             500,
-            "Something went wrong !",
+            { message: error || "Something went wrong !" },
         );
     }
 });
@@ -46,7 +46,7 @@ export const signin = asyncHandler(async (req, res) => {
     } catch (error) {
         throw new ApiError(
             501,
-            "Something went wrong ",
+            error || "Something went wrong ",
         );
     }
 });
@@ -63,18 +63,18 @@ export const getMe = (req, res) => {
 
 export const changePassword = asyncHandler(async (req, res) => {
     try {
-    
+
         const result = changePasswordSchema.safeParse(req.body);
         if (!result.success) throw new ApiError(400, 'Validation failed', formatValidationError(result.error));
-    
+
         await changeUserPassword(req.user.id, result.data.oldPassword, result.data.newPassword);
         res.status(200).json(new ApiResponse(200, {}, 'Password changed successfully'));
-  } catch (error) {
-    throw new ApiError(
-      502,
-      "Something went wrong while changing password !",
-    );
-  }
+    } catch (error) {
+        throw new ApiError(
+            502,
+            error || "Something went wrong while changing password !",
+        );
+    }
 });
 
 

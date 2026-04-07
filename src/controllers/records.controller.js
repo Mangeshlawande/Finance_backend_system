@@ -10,17 +10,24 @@ export const fetchAllRecords = asyncHandler(async (req, res) => {
     const parsed = recordQuerySchema.safeParse(req.query);
     if (!parsed.success) throw new ApiError(400, 'Validation failed', formatValidationError(parsed.error));
 
-    const { data, total, page, limit } = await getAllRecords(parsed.data);
-    res.json(new ApiResponse(200, {
-        records: data,
-        pagination: {
-            total,
-            page,
-            limit,
-            totalPages: Math.ceil(total / limit),
-            hasNextPage: page * limit < total,
-        },
-    }, 'Records retrieved'));
+    try {
+        const { data, total, page, limit } = await getAllRecords(parsed.data);
+        res.json(new ApiResponse(200, {
+            records: data,
+            pagination: {
+                total,
+                page,
+                limit,
+                totalPages: Math.ceil(total / limit),
+                hasNextPage: page * limit < total,
+            },
+        }, 'Records retrieved'));
+    } catch (error) {
+        throw new ApiError(
+            503,
+            error || "Server Error while getting records !"
+        )
+    }
 });
 
 export const fetchRecordById = asyncHandler(async (req, res) => {
@@ -34,7 +41,7 @@ export const fetchRecordById = asyncHandler(async (req, res) => {
     } catch (error) {
         throw new ApiError(
             502,
-            "Something went wrong while getting Records !!",
+            error || "Something went wrong while getting Records !!",
         );
     }
 });
@@ -51,7 +58,7 @@ export const createNewRecord = asyncHandler(async (req, res) => {
     } catch (error) {
         throw new ApiError(
             503,
-            "Something went wrong while Creating Records !!",
+            error || "Something went wrong while Creating Records !!",
         );
     }
 });
@@ -72,7 +79,7 @@ export const updateRecordById = asyncHandler(async (req, res) => {
     } catch (error) {
         throw new ApiError(
             505,
-            "Something went wrong while Updating Records !!",
+            error || "Something went wrong while Updating Records !!",
         );
     }
 });
@@ -90,7 +97,7 @@ export const deleteRecordById = asyncHandler(async (req, res) => {
     } catch (error) {
         throw new ApiError(
             503,
-            "Something went wrong while Deleting Records !!",
+            error || "Something went wrong while Deleting Records !!",
         );
     }
 });
