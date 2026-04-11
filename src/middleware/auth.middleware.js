@@ -3,15 +3,13 @@ import { jwttoken } from '#utils/jwt.js';
 import { ApiError } from '#utils/ApiError.js';
 
 export const authenticateToken = (req, res, next) => {
-    const token = req.cookies?.token;
-    if (!token) return next(new ApiError(401, 'Authentication required: no token provided'));
-
+    const token = req.cookies?.access_token;   // <-- changed from 'token'
+    if (!token) return next(new ApiError(401, 'Authentication required'));
     try {
         req.user = jwttoken.verify(token);
-        logger.info(`Authenticated: ${req.user.email} [${req.user.role}]`);
         next();
     } catch {
-        next(new ApiError(401, 'Authentication failed: invalid or expired token'));
+        next(new ApiError(401, 'Invalid or expired access token'));
     }
 };
 
