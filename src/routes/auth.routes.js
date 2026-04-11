@@ -4,12 +4,11 @@ import { authenticateToken } from '#middleware/auth.middleware.js';
 
 const router = Router();
 
-
-router.post('/sign-up', signup);//work
-router.post('/sign-in', signin);//work
-router.post('/sign-out', signout);//work
-router.post('/refresh', refresh);
-router.get('/me', authenticateToken, getMe);
+router.post('/sign-up',         signup);
+router.post('/sign-in',         signin);
+router.post('/sign-out',        authenticateToken, signout);  // needs user id to revoke tokens
+router.post('/refresh',         refresh);
+router.get('/me',               authenticateToken, getMe);
 router.post('/change-password', authenticateToken, changePassword);
 
 export default router;

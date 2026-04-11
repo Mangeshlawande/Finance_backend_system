@@ -3,7 +3,7 @@ import { jwttoken } from '#utils/jwt.js';
 import { ApiError } from '#utils/ApiError.js';
 
 export const authenticateToken = (req, res, next) => {
-    const token = req.cookies?.access_token;   // <-- changed from 'token'
+    const token = req.cookies?.access_token;
     if (!token) return next(new ApiError(401, 'Authentication required'));
     try {
         req.user = jwttoken.verify(token);

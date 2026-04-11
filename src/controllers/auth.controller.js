@@ -1,3 +1,4 @@
+import { db } from "#config/database.js";
 import logger from "#config/logger.js";
 import { users } from "#models/users.model.js";
 import { createUser, authenticateUser, changeUserPassword, createRefreshToken, rotateRefreshToken, revokeAllUserTokens } from "#services/auth.service.js";
@@ -8,7 +9,7 @@ import { cookies } from "#utils/cookies.js";
 import { formatValidationError } from "#utils/format.js"
 import { jwttoken } from "#utils/jwt.js";
 import { changePasswordSchema, signInSchema, signupSchema } from "#validations/auth.validation.js";
-
+import { eq } from "drizzle-orm";
 
 
 
@@ -48,12 +49,12 @@ export const signup = asyncHandler(async (req, res) => {
         logger.info(`signup: ${email}`);
 
         return res.status(201)
-            .cookies()
             .json(new ApiResponse(201, { user }, 'User registered successfully'));
+
     } catch (error) {
         throw new ApiError(
             500,
-            { message: error || "Something went wrong !" },
+            error,
         );
     }
 });
@@ -73,7 +74,6 @@ export const signin = asyncHandler(async (req, res) => {
 
         return res
             .status(200)
-            .cookies()
             .json(new ApiResponse(200, { user }, 'Signed in successfully'));
 
     } catch (error) {

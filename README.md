@@ -178,6 +178,28 @@ Authorization: Bearer {{token}}
 
 ```
 
+### POST /auth/refreshed
+
+🔒 Requires auth. refresh the refresh token and cookies.
+
+**Request**
+```
+POST {{baseUrl}}/auth/refresh
+get token from cookies 
+
+```
+
+**Expected Response** `200 OK`
+```json
+{
+    "statusCode": 200,
+    "success": true,
+    "message": "Token refreshed",
+    "data": {}
+}
+
+```
+
 ---
 
 ### GET /auth/me

@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1775296635891,
-      "tag": "0000_rare_ravenous",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1775306060713,
-      "tag": "0001_condemned_champions",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1775382159807,
-      "tag": "0002_mute_chronomancer",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1775890879896,
-      "tag": "0003_living_rockslide",
+      "when": 1775916042523,
+      "tag": "0000_pink_ultimo",
       "breakpoints": true
     }
   ]

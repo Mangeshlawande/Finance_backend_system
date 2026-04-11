@@ -5,7 +5,6 @@ import { refreshTokens, users } from '#models/users.model.js'
 import { ApiError } from '#utils/ApiError.js'
 import logger from '#config/logger.js'
 import { generateRefreshToken, hashToken } from '#utils/jwt.js'
-import { asyncHandler } from '#utils/asyncHandler.js'
 
 
 
@@ -86,24 +85,34 @@ export const createUser = async ({ name, email, password, role = 'viewer' }) => 
         return user;
     } catch (error) {
         throw new ApiError(
-            502,
-            "Something went wrong while creating user!!",
+            501,
+            error || "Something went wrong while creating user!!",
         );
     }
 };
 
 
 export const authenticateUser = async ({ email, password }) => {
-    const [user] = await db.select().from(users).where(eq(users.email, email)).limit(1);
+    const [user] = await db
+        .select()
+        .from(users)
+        .where(eq(users.email, email))
+        .limit(1);
+
     if (!user) throw new ApiError(404, 'User not found');
     if (!user.is_active) throw new ApiError(403, 'Account is deactivated');
 
     const valid = await comparePassword(password, user.password);
     if (!valid) throw new ApiError(401, 'Invalid credentials');
 
-    const { password: _, ...safe } = user;
     logger.info(`User authenticated: ${user.email}`);
-    return safe;
+
+    return {
+        id: user.id,
+        email: user.email,
+        role: user.role,
+        name: user.name
+    };
 };
 
 
