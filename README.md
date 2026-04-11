@@ -1,6 +1,6 @@
 # Finance Backend — Postman API Reference
 
-> Base URL: `http://localhost:3000/api/v1`  
+> Base URL: `http://localhost:3002/api/v1`  
 > All protected routes require the `Authorization: Bearer <accessToken>` header **or** the `accessToken` cookie set at login.
 
 ---
@@ -29,23 +29,28 @@
 
 ## 1. Healthcheck
 
-### GET /healthcheck
+### GET /health
 
 Verifies the server is running. No auth required.
 
 **Request**
 ```
-GET {{baseUrl}}/healthcheck
+GET {{baseUrl}}/health
 ```
 
 **Expected Response** `200 OK`
 ```json
 {
-  "statusCode": 200,
-  "success": true,
-  "message": "OK",
-  "data": {}
+    "statusCode": 200,
+    "success": true,
+    "message": "Service is healthy",
+    "data": {
+        "status": "OK",
+        "timestamp": "2026-04-07T13:17:56.240Z",
+        "uptime": 47.372532238
+    }
 }
+
 ```
 
 ---
@@ -58,45 +63,46 @@ Creates a new user account. Default role is `viewer`.
 
 **Request**
 ```
-POST {{baseUrl}}/auth/register
+POST {{baseUrl}}/auth/sign-up
+
 Content-Type: application/json
+
 ```
 
 **Body**
 ```json
 {
-  "email": "john@example.com",
-  "username": "johndoe",
-  "password": "secret123",
-  "fullName": "John Doe"
+  "name": "apple",
+  "email": "apple@example.com",
+  "password": "apple123",
+  "role":"viewer"
 }
+
 ```
 
 | Field | Required | Rules |
 |-------|----------|-------|
 | `email` | ✅ | Valid email format |
-| `username` | ✅ | Lowercase, min 3 chars, unique |
+| `name` | ✅ | Lowercase, min 3 chars, unique |
 | `password` | ✅ | Min 6 characters |
-| `fullName` | ❌ | Any string |
+| `role` | ❌ | enum |
 
 **Expected Response** `201 Created`
 ```json
 {
-  "statusCode": 201,
-  "success": true,
-  "message": "User registered successfully",
-  "data": {
-    "user": {
-      "_id": "664abc...",
-      "email": "john@example.com",
-      "username": "johndoe",
-      "fullName": "John Doe",
-      "role": "viewer",
-      "isActive": true,
-      "createdAt": "2026-04-01T10:00:00.000Z"
+    "statusCode": 201,
+    "success": true,
+    "message": "User registered successfully",
+    "data": {
+        "user": {
+            "id": "83013864-9260-4f71-93e2-a01b30ad0207",
+            "name": "lime",
+            "email": "lime@example.com",
+            "role": "analyst"
+        }
     }
-  }
 }
+
 ```
 
 **Error Cases**
@@ -110,7 +116,8 @@ Authenticates a user and returns access + refresh tokens.
 
 **Request**
 ```
-POST {{baseUrl}}/auth/login
+POST {{baseUrl}}/auth/sign-in
+
 Content-Type: application/json
 ```
 
@@ -125,23 +132,24 @@ Content-Type: application/json
 **Expected Response** `200 OK`
 ```json
 {
-  "statusCode": 200,
-  "success": true,
-  "message": "Logged in successfully",
-  "data": {
-    "user": { ... },
-    "accessToken": "eyJhbGci...",
-    "refreshToken": "eyJhbGci..."
-  }
+    "statusCode": 200,
+    "success": true,
+    "message": "Signed in successfully",
+    "data": {
+        "user": {
+            "id": "83013864-9260-4f71-93e2-a01b30ad0207",
+            "name": "lime",
+            "email": "lime@example.com",
+            "role": "analyst",
+            "is_active": true,
+            "created_at": "2026-04-07T13:34:17.674Z",
+            "updated_at": "2026-04-07T13:34:17.674Z"
+        }
+    }
 }
+
 ```
 
-> 💡 **Postman tip:** In the Tests tab, add:
-> ```js
-> const res = pm.response.json();
-> pm.collectionVariables.set("token", res.data.accessToken);
-> pm.collectionVariables.set("refreshToken", res.data.refreshToken);
-> ```
 
 **Error Cases**
 - `400` — Invalid credentials
@@ -155,54 +163,20 @@ Content-Type: application/json
 
 **Request**
 ```
-POST {{baseUrl}}/auth/logout
+POST {{baseUrl}}/auth/sign-out
 Authorization: Bearer {{token}}
 ```
 
 **Expected Response** `200 OK`
 ```json
 {
-  "statusCode": 200,
-  "success": true,
-  "message": "Logged out successfully",
-  "data": {}
+    "statusCode": 200,
+    "success": true,
+    "message": "Signed out successfully",
+    "data": {}
 }
+
 ```
-
----
-
-### POST /auth/refresh-token
-
-Issues a new access token using the refresh token. Can be sent via cookie or request body.
-
-**Request**
-```
-POST {{baseUrl}}/auth/refresh-token
-Content-Type: application/json
-```
-
-**Body** *(only needed if not using cookies)*
-```json
-{
-  "refreshToken": "{{refreshToken}}"
-}
-```
-
-**Expected Response** `200 OK`
-```json
-{
-  "statusCode": 200,
-  "success": true,
-  "message": "Tokens refreshed",
-  "data": {
-    "accessToken": "eyJhbGci...",
-    "refreshToken": "eyJhbGci..."
-  }
-}
-```
-
-**Error Cases**
-- `401` — Missing, invalid, or revoked refresh token
 
 ---
 
@@ -213,25 +187,25 @@ Content-Type: application/json
 **Request**
 ```
 GET {{baseUrl}}/auth/me
-Authorization: Bearer {{token}}
 ```
 
 **Expected Response** `200 OK`
 ```json
 {
-  "statusCode": 200,
-  "success": true,
-  "message": "Current user fetched",
-  "data": {
-    "user": {
-      "_id": "664abc...",
-      "email": "john@example.com",
-      "username": "johndoe",
-      "role": "admin",
-      "isActive": true
+    "statusCode": 200,
+    "success": true,
+    "message": "Current user fetched",
+    "data": {
+        "user": {
+            "id": "48d7442e-9c4a-4aab-a0d9-6cec13a04413",
+            "email": "master@example.com",
+            "role": "admin",
+            "iat": 1775881220,
+            "exp": 1775967620
+        }
     }
-  }
 }
+
 ```
 
 ---
@@ -243,7 +217,6 @@ Authorization: Bearer {{token}}
 **Request**
 ```
 POST {{baseUrl}}/auth/change-password
-Authorization: Bearer {{token}}
 Content-Type: application/json
 ```
 
@@ -279,42 +252,68 @@ Content-Type: application/json
 
 ### GET /users
 
-Returns a paginated, filterable list of all users.
+Returns a  list of all users.
 
 **Request**
 ```
 GET {{baseUrl}}/users
 Authorization: Bearer {{token}}
 ```
-
-**Query Parameters**
-
-| Param | Type | Description |
-|-------|------|-------------|
-| `page` | number | Page number (default: 1) |
-| `limit` | number | Results per page (default: 20, max: 100) |
-| `role` | string | Filter by role: `admin`, `analyst`, `viewer` |
-| `isActive` | boolean | Filter by status: `true` or `false` |
-| `search` | string | Search by username, email, or fullName |
-
-**Example**
-```
-GET {{baseUrl}}/users?role=analyst&isActive=true&page=1&limit=10
-```
-
-**Expected Response** `200 OK`
 ```json
 {
-  "statusCode": 200,
-  "success": true,
-  "message": "Users fetched",
-  "data": {
-    "data": [ { ...user }, { ...user } ],
-    "total": 25,
-    "page": 1,
-    "limit": 10,
-    "totalPages": 3
-  }
+    "statusCode": 200,
+    "success": true,
+    "message": "Users retrieved",
+    "data": {
+        "users": [
+            {
+                "id": "349479e7-d460-4f4a-b826-46893ae70aea",
+                "name": "System Admin",
+                "email": "admin@finance.dev",
+                "role": "admin",
+                "is_active": true,
+                "created_at": "2026-04-04T17:51:23.685Z",
+                "updated_at": "2026-04-04T17:51:23.685Z"
+            },
+            {
+                "id": "523f1687-3638-4292-8895-9bfdcc358ac8",
+                "name": "mango",
+                "email": "mango@example.com",
+                "role": "analyst",
+                "is_active": true,
+                "created_at": "2026-04-05T08:32:57.506Z",
+                "updated_at": "2026-04-05T08:45:57.845Z"
+            },
+            {
+                "id": "5a9732bb-7169-4a27-ab71-56170f6155d2",
+                "name": "orange",
+                "email": "orange@example.com",
+                "role": "analyst",
+                "is_active": true,
+                "created_at": "2026-04-05T08:34:16.442Z",
+                "updated_at": "2026-04-05T08:34:16.442Z"
+            },
+            {
+                "id": "48d7442e-9c4a-4aab-a0d9-6cec13a04413",
+                "name": "master",
+                "email": "master@example.com",
+                "role": "admin",
+                "is_active": true,
+                "created_at": "2026-04-05T08:36:09.372Z",
+                "updated_at": "2026-04-07T13:40:26.681Z"
+            },
+            {
+                "id": "83013864-9260-4f71-93e2-a01b30ad0207",
+                "name": "lime",
+                "email": "lime@example.com",
+                "role": "analyst",
+                "is_active": true,
+                "created_at": "2026-04-07T13:34:17.674Z",
+                "updated_at": "2026-04-07T13:34:17.674Z"
+            }
+        ],
+        "count": 5
+    }
 }
 ```
 
@@ -326,20 +325,29 @@ Returns a single user by their MongoDB ObjectId.
 
 **Request**
 ```
-GET {{baseUrl}}/users/664abc123def456789012345
-Authorization: Bearer {{token}}
+GET {{baseUrl}}/users/user-id/: 349479e7-d460-4f4a-b826-46893ae70aea
+
 ```
 
 **Expected Response** `200 OK`
 ```json
 {
-  "statusCode": 200,
-  "success": true,
-  "message": "User fetched",
-  "data": {
-    "user": { "_id": "664abc...", "email": "...", "role": "analyst", ... }
-  }
+    "statusCode": 200,
+    "success": true,
+    "message": "User retrieved",
+    "data": {
+        "user": {
+            "id": "349479e7-d460-4f4a-b826-46893ae70aea",
+            "name": "System Admin",
+            "email": "admin@finance.dev",
+            "role": "admin",
+            "is_active": true,
+            "created_at": "2026-04-04T17:51:23.685Z",
+            "updated_at": "2026-04-04T17:51:23.685Z"
+        }
+    }
 }
+
 ```
 
 **Error Cases**
@@ -347,22 +355,25 @@ Authorization: Bearer {{token}}
 
 ---
 
-### PATCH /users/:userId/role
+### PATCH /users/:userId
 
 Updates another user's role. Admins cannot change their own role.
 
 **Request**
 ```
-PATCH {{baseUrl}}/users/664abc123def456789012345/role
-Authorization: Bearer {{token}}
+PUT {{baseUrl}}/users/user-id/: 63101b53-b359-4298-9fbe-5adde21d71c0
+
 Content-Type: application/json
 ```
 
 **Body**
 ```json
 {
-  "role": "analyst"
+    "name": "Apple",
+    "email": "apple@example.com",
+    "role": "viewer"
 }
+
 ```
 
 | `role` values | |
@@ -374,11 +385,22 @@ Content-Type: application/json
 **Expected Response** `200 OK`
 ```json
 {
-  "statusCode": 200,
-  "success": true,
-  "message": "User role updated",
-  "data": { "user": { ...updatedUser } }
+    "statusCode": 200,
+    "success": true,
+    "message": "User updated",
+    "data": {
+        "user": {
+            "id": "63101b53-b359-4298-9fbe-5adde21d71c0",
+            "name": "Apple",
+            "email": "apple@example.com",
+            "role": "viewer",
+            "is_active": true,
+            "created_at": "2026-04-05T08:35:13.687Z",
+            "updated_at": "2026-04-07T13:44:38.835Z"
+        }
+    }
 }
+
 ```
 
 **Error Cases**
@@ -387,39 +409,41 @@ Content-Type: application/json
 
 ---
 
-### PATCH /users/:userId/status
+### DELETE /users/:userId
 
-Activates or deactivates a user account. Admins cannot deactivate themselves.
+Delete another user's Admins can delete
 
 **Request**
 ```
-PATCH {{baseUrl}}/users/664abc123def456789012345/status
-Authorization: Bearer {{token}}
-Content-Type: application/json
+DELETE {{baseUrl}}/users/:63101b53-b359-4298-9fbe-5adde21d71c0
+
 ```
 
-**Body**
-```json
-{
-  "isActive": false
-}
-```
+
+
 
 **Expected Response** `200 OK`
 ```json
 {
-  "statusCode": 200,
-  "success": true,
-  "message": "User deactivated successfully",
-  "data": { "user": { ...updatedUser } }
+    "statusCode": 200,
+    "success": true,
+    "message": "User deleted",
+    "data": {
+        "user": {
+            "id": "63101b53-b359-4298-9fbe-5adde21d71c0",
+            "email": "apple@example.com"
+        }
+    }
 }
+
 ```
 
 **Error Cases**
-- `400` — Trying to deactivate own account
+- `400` — Trying to change own role
 - `404` — User not found
 
 ---
+
 
 ## 4. Financial Record Routes
 
@@ -433,8 +457,7 @@ Returns a paginated, filtered, sorted list of financial records.
 
 **Request**
 ```
-GET {{baseUrl}}/records
-Authorization: Bearer {{token}}
+GET {{baseUrl}}/records/get-records/
 ```
 
 **Query Parameters**
@@ -450,25 +473,71 @@ Authorization: Bearer {{token}}
 | `sortBy` | string | Field to sort by (default: `date`) |
 | `order` | string | `asc` or `desc` (default: `desc`) |
 
-**Example**
-```
-GET {{baseUrl}}/records?type=expense&category=groceries&startDate=2026-01-01&endDate=2026-03-31&page=1&limit=20
-```
+
 
 **Expected Response** `200 OK`
 ```json
 {
-  "statusCode": 200,
-  "success": true,
-  "message": "Records fetched successfully",
-  "data": {
-    "data": [ { ...record }, { ...record } ],
-    "total": 48,
-    "page": 1,
-    "limit": 20,
-    "totalPages": 3
-  }
+    "statusCode": 200,
+    "success": true,
+    "message": "Records retrieved",
+    "data": {
+        "records": [
+            {
+                "id": 5,
+                "amount": "800.00",
+                "type": "expense",
+                "category": "entertainment",
+                "date": "2026-04-05T10:04:33.014Z",
+                "description": "Movie and dinner",
+                "created_by": "48d7442e-9c4a-4aab-a0d9-6cec13a04413",
+                "created_at": "2026-04-05T10:04:35.948Z",
+                "updated_at": "2026-04-05T10:04:35.948Z"
+            },
+            {
+                "id": 4,
+                "amount": "3000.00",
+                "type": "expense",
+                "category": "freelance",
+                "date": "2026-04-05T10:03:59.764Z",
+                "description": "Freelance project payment",
+                "created_by": "48d7442e-9c4a-4aab-a0d9-6cec13a04413",
+                "created_at": "2026-04-05T10:04:02.344Z",
+                "updated_at": "2026-04-05T10:12:57.478Z"
+            },
+            {
+                "id": 3,
+                "amount": "1200.00",
+                "type": "expense",
+                "category": "transport",
+                "date": "2026-04-05T10:03:41.791Z",
+                "description": "Cab fare",
+                "created_by": "48d7442e-9c4a-4aab-a0d9-6cec13a04413",
+                "created_at": "2026-04-05T10:03:45.141Z",
+                "updated_at": "2026-04-05T10:03:45.141Z"
+            },
+            {
+                "id": 1,
+                "amount": "5000.00",
+                "type": "income",
+                "category": "salary",
+                "date": "2026-04-05T09:57:48.347Z",
+                "description": "April salary payment",
+                "created_by": "48d7442e-9c4a-4aab-a0d9-6cec13a04413",
+                "created_at": "2026-04-05T09:57:50.883Z",
+                "updated_at": "2026-04-05T09:57:50.883Z"
+            }
+        ],
+        "pagination": {
+            "total": 4,
+            "page": "1",
+            "limit": "20",
+            "totalPages": 1,
+            "hasNextPage": false
+        }
+    }
 }
+
 ```
 
 **Error Cases**
@@ -482,28 +551,30 @@ Returns a single financial record by ID.
 
 **Request**
 ```
-GET {{baseUrl}}/records/664def123abc456789012345
-Authorization: Bearer {{token}}
+GET {{baseUrl}}/records/recordby-id/: 6
 ```
 
 **Expected Response** `200 OK`
 ```json
 {
-  "statusCode": 200,
-  "success": true,
-  "message": "Record fetched",
-  "data": {
-    "record": {
-      "_id": "664def...",
-      "amount": 2500,
-      "type": "income",
-      "category": "salary",
-      "date": "2026-03-31T00:00:00.000Z",
-      "description": "March salary",
-      "createdBy": { "username": "johndoe", "fullName": "John Doe" }
+    "statusCode": 200,
+    "success": true,
+    "message": "Record retrieved",
+    "data": {
+        "record": {
+            "id": 6,
+            "amount": "8000.00",
+            "type": "income",
+            "category": "freelance",
+            "date": "2026-04-07T14:04:09.881Z",
+            "description": "web dev and tech-stack",
+            "created_by": "48d7442e-9c4a-4aab-a0d9-6cec13a04413",
+            "created_at": "2026-04-07T14:04:12.169Z",
+            "updated_at": "2026-04-07T14:04:12.169Z"
+        }
     }
-  }
 }
+
 ```
 
 **Error Cases**
@@ -517,20 +588,21 @@ Authorization: Bearer {{token}}
 
 **Request**
 ```
-POST {{baseUrl}}/records
-Authorization: Bearer {{token}}
+POST {{baseUrl}}/records/create-record/
+
 Content-Type: application/json
 ```
 
 **Body**
 ```json
 {
-  "amount": 5000,
-  "type": "income",
-  "category": "salary",
-  "date": "2026-04-01",
-  "description": "April salary payment"
+
+  "amount": 8000,
+    "type": "income",
+    "category": "freelance",
+    "description": "web dev and tech-stack"
 }
+
 ```
 
 | Field | Required | Rules |
@@ -538,7 +610,6 @@ Content-Type: application/json
 | `amount` | ✅ | Positive number (> 0) |
 | `type` | ✅ | `income` or `expense` |
 | `category` | ❌ | See category list below (defaults to `other`) |
-| `date` | ❌ | ISO 8601 date (defaults to today) |
 | `description` | ❌ | Max 500 characters |
 
 **Available Categories**
@@ -547,12 +618,22 @@ Content-Type: application/json
 **Expected Response** `201 Created`
 ```json
 {
-  "statusCode": 201,
-  "success": true,
-  "message": "Financial record created successfully",
-  "data": {
-    "record": { "_id": "...", "amount": 5000, "type": "income", ... }
-  }
+    "statusCode": 201,
+    "success": true,
+    "message": "Record created",
+    "data": {
+        "record": {
+            "id": 6,
+            "amount": "8000.00",
+            "type": "income",
+            "category": "freelance",
+            "date": "2026-04-07T14:04:09.881Z",
+            "description": "web dev and tech-stack",
+            "created_by": "48d7442e-9c4a-4aab-a0d9-6cec13a04413",
+            "created_at": "2026-04-07T14:04:12.169Z",
+            "updated_at": "2026-04-07T14:04:12.169Z"
+        }
+    }
 }
 ```
 
@@ -564,26 +645,42 @@ Content-Type: application/json
 
 **Request**
 ```
-PUT {{baseUrl}}/records/664def123abc456789012345
-Authorization: Bearer {{token}}
+PUT {{baseUrl}}/records/update-record/: 7
+
 Content-Type: application/json
 ```
 
 **Body** *(all fields optional)*
 ```json
 {
-  "amount": 5500,
-  "description": "April salary — revised"
+    "amount": "1000.00",
+    "type":"expense",
+    "category": "utilities",
+    "description": "snacks and others "
+    
 }
+
 ```
 
 **Expected Response** `200 OK`
 ```json
 {
-  "statusCode": 200,
-  "success": true,
-  "message": "Record updated successfully",
-  "data": { "record": { ...updatedRecord } }
+    "statusCode": 200,
+    "success": true,
+    "message": "Record updated",
+    "data": {
+        "record": {
+            "id": 7,
+            "amount": "1000.00",
+            "type": "expense",
+            "category": "utilities",
+            "date": "2026-04-07T14:04:33.991Z",
+            "description": "snacks and others",
+            "created_by": "48d7442e-9c4a-4aab-a0d9-6cec13a04413",
+            "created_at": "2026-04-07T14:04:36.328Z",
+            "updated_at": "2026-04-07T14:09:22.767Z"
+        }
+    }
 }
 ```
 
@@ -598,17 +695,16 @@ Content-Type: application/json
 
 **Request**
 ```
-DELETE {{baseUrl}}/records/664def123abc456789012345
-Authorization: Bearer {{token}}
+DELETE {{baseUrl}}/records/delete-record/: 5
 ```
 
 **Expected Response** `200 OK`
 ```json
 {
-  "statusCode": 200,
-  "success": true,
-  "message": "Record deleted successfully",
-  "data": {}
+    "statusCode": 200,
+    "success": true,
+    "message": "Record deleted",
+    "data": {}
 }
 ```
 
@@ -630,28 +726,20 @@ Returns total income, total expenses, net balance, and record count. Supports op
 **Request**
 ```
 GET {{baseUrl}}/dashboard/summary
-Authorization: Bearer {{token}}
 ```
-
-**Query Parameters**
-
-| Param | Type | Description |
-|-------|------|-------------|
-| `startDate` | ISO 8601 | Optional start date |
-| `endDate` | ISO 8601 | Optional end date |
 
 **Expected Response** `200 OK`
 ```json
 {
-  "statusCode": 200,
-  "success": true,
-  "message": "Summary fetched",
-  "data": {
-    "totalIncome": 85000,
-    "totalExpenses": 32000,
-    "netBalance": 53000,
-    "recordCount": 47
-  }
+    "statusCode": 200,
+    "success": true,
+    "message": "Summary retrieved",
+    "data": {
+        "totalIncome": 13000,
+        "totalExpenses": 5200,
+        "netBalance": 7800,
+        "recordCount": 5
+    }
 }
 ```
 
@@ -664,7 +752,6 @@ Returns per-category totals split by income/expense type.
 **Request**
 ```
 GET {{baseUrl}}/dashboard/category-breakdown
-Authorization: Bearer {{token}}
 ```
 
 **Query Parameters**
@@ -678,16 +765,45 @@ Authorization: Bearer {{token}}
 **Expected Response** `200 OK`
 ```json
 {
-  "statusCode": 200,
-  "success": true,
-  "message": "Category breakdown fetched",
-  "data": {
-    "breakdown": [
-      { "category": "salary", "type": "income", "total": 60000, "count": 3 },
-      { "category": "rent", "type": "expense", "total": 15000, "count": 3 }
-    ]
-  }
+    "statusCode": 200,
+    "success": true,
+    "message": "Category breakdown retrieved",
+    "data": {
+        "breakdown": [
+            {
+                "category": "freelance",
+                "type": "income",
+                "total": 8000,
+                "count": 1
+            },
+            {
+                "category": "salary",
+                "type": "income",
+                "total": 5000,
+                "count": 1
+            },
+            {
+                "category": "freelance",
+                "type": "expense",
+                "total": 3000,
+                "count": 1
+            },
+            {
+                "category": "transport",
+                "type": "expense",
+                "total": 1200,
+                "count": 1
+            },
+            {
+                "category": "utilities",
+                "type": "expense",
+                "total": 1000,
+                "count": 1
+            }
+        ]
+    }
 }
+
 ```
 
 ---
@@ -699,7 +815,7 @@ Returns monthly income and expense totals for a full year (12-month matrix, easy
 **Request**
 ```
 GET {{baseUrl}}/dashboard/monthly-trends
-Authorization: Bearer {{token}}
+
 ```
 
 **Query Parameters**
@@ -710,66 +826,84 @@ Authorization: Bearer {{token}}
 
 **Example**
 ```
-GET {{baseUrl}}/dashboard/monthly-trends?year=2026
+GET {{baseUrl}}/dashboard/monthly-trends
 ```
 
 **Expected Response** `200 OK`
 ```json
 {
-  "statusCode": 200,
-  "success": true,
-  "message": "Monthly trends fetched",
-  "data": {
-    "year": 2026,
-    "trends": [
-      { "month": 1, "income": 20000, "expense": 8000 },
-      { "month": 2, "income": 20000, "expense": 9500 },
-      { "month": 3, "income": 22000, "expense": 7200 },
-      ...
-      { "month": 12, "income": 0, "expense": 0 }
-    ]
-  }
+    "statusCode": 200,
+    "success": true,
+    "message": "Monthly trends retrieved",
+    "data": {
+        "year": 2026,
+        "trends": [
+            {
+                "month": 1,
+                "income": 0,
+                "expense": 0
+            },
+            {
+                "month": 2,
+                "income": 0,
+                "expense": 0
+            },
+            {
+                "month": 3,
+                "income": 0,
+                "expense": 0
+            },
+            {
+                "month": 4,
+                "income": 13000,
+                "expense": 5200
+            },
+            {
+                "month": 5,
+                "income": 0,
+                "expense": 0
+            },
+            {
+                "month": 6,
+                "income": 0,
+                "expense": 0
+            },
+            {
+                "month": 7,
+                "income": 0,
+                "expense": 0
+            },
+            {
+                "month": 8,
+                "income": 0,
+                "expense": 0
+            },
+            {
+                "month": 9,
+                "income": 0,
+                "expense": 0
+            },
+            {
+                "month": 10,
+                "income": 0,
+                "expense": 0
+            },
+            {
+                "month": 11,
+                "income": 0,
+                "expense": 0
+            },
+            {
+                "month": 12,
+                "income": 0,
+                "expense": 0
+            }
+        ]
+    }
 }
+
 ```
 
----
-
-### GET /dashboard/weekly-trends
-
-Returns daily income and expense totals for the last N days (max 30).
-
-**Request**
-```
-GET {{baseUrl}}/dashboard/weekly-trends
-Authorization: Bearer {{token}}
-```
-
-**Query Parameters**
-
-| Param | Type | Description |
-|-------|------|-------------|
-| `days` | number | Number of days to look back (default: 7, max: 30) |
-
-**Example**
-```
-GET {{baseUrl}}/dashboard/weekly-trends?days=14
-```
-
-**Expected Response** `200 OK`
-```json
-{
-  "statusCode": 200,
-  "success": true,
-  "message": "Weekly/daily trends fetched",
-  "data": {
-    "days": 14,
-    "trends": [
-      { "date": "2026-03-23", "type": "income", "total": 5000, "count": 1 },
-      { "date": "2026-03-23", "type": "expense", "total": 1200, "count": 3 }
-    ]
-  }
-}
-```
 
 ---
 
@@ -792,23 +926,60 @@ Authorization: Bearer {{token}}
 **Expected Response** `200 OK`
 ```json
 {
-  "statusCode": 200,
-  "success": true,
-  "message": "Recent activity fetched",
-  "data": {
-    "records": [
-      {
-        "_id": "664def...",
-        "amount": 1200,
-        "type": "expense",
-        "category": "groceries",
-        "date": "2026-04-03T00:00:00.000Z",
-        "description": "Weekly groceries",
-        "createdBy": { "username": "johndoe", "fullName": "John Doe" }
-      }
-    ]
-  }
+    "statusCode": 200,
+    "success": true,
+    "message": "Recent activity retrieved",
+    "data": {
+        "records": [
+            {
+                "id": 7,
+                "amount": "1000.00",
+                "type": "expense",
+                "category": "utilities",
+                "date": "2026-04-07T14:04:33.991Z",
+                "description": "snacks and others",
+                "created_at": "2026-04-07T14:04:36.328Z"
+            },
+            {
+                "id": 6,
+                "amount": "8000.00",
+                "type": "income",
+                "category": "freelance",
+                "date": "2026-04-07T14:04:09.881Z",
+                "description": "web dev and tech-stack",
+                "created_at": "2026-04-07T14:04:12.169Z"
+            },
+            {
+                "id": 4,
+                "amount": "3000.00",
+                "type": "expense",
+                "category": "freelance",
+                "date": "2026-04-05T10:03:59.764Z",
+                "description": "Freelance project payment",
+                "created_at": "2026-04-05T10:04:02.344Z"
+            },
+            {
+                "id": 3,
+                "amount": "1200.00",
+                "type": "expense",
+                "category": "transport",
+                "date": "2026-04-05T10:03:41.791Z",
+                "description": "Cab fare",
+                "created_at": "2026-04-05T10:03:45.141Z"
+            },
+            {
+                "id": 1,
+                "amount": "5000.00",
+                "type": "income",
+                "category": "salary",
+                "date": "2026-04-05T09:57:48.347Z",
+                "description": "April salary payment",
+                "created_at": "2026-04-05T09:57:50.883Z"
+            }
+        ]
+    }
 }
+
 ```
 
 ---
