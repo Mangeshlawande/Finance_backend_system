@@ -3,69 +3,48 @@ import { ApiResponse } from '#utils/ApiResponse.js';
 import { asyncHandler } from '#utils/asyncHandler.js';
 
 export const fetchSummary = asyncHandler(async (req, res) => {
-
-  try {
-    const data = await getSummary(req.query);
-    res.json(new ApiResponse(200, data, 'Summary retrieved'));
-
-  } catch (error) {
-    throw new ApiError(
-      504,
-      error || "Internal server Error !",
-    );
-  }
+  const data = await getSummary({
+    userId: req.user.id,
+    ...req.query
+  });
+  res.json(new ApiResponse(
+    200,
+    data,
+    'Summary retrieved'
+  ));
 });
 
 export const fetchCategoryBreakdown = asyncHandler(async (req, res) => {
-  try {
-
-    const breakdown = await getCategoryBreakdown(req.query);
-    res.json(new ApiResponse(200, { breakdown }, 'Category breakdown retrieved'));
-  } catch (error) {
-    throw new ApiError(
-      502,
-      error || "Something went wrong while getting category",
-    );
-  }
+  const breakdown = await getCategoryBreakdown({
+    userId: req.user.id,
+    ...req.query
+  });
+  res.json(new ApiResponse(
+    200,
+    { breakdown },
+    'Category breakdown retrieved'));
 });
 
 export const fetchMonthlyTrends = asyncHandler(async (req, res) => {
-  try {
-
-    const data = await getMonthlyTrends({ year: req.query.year ? +req.query.year : undefined });
-    res.json(new ApiResponse(200, data, 'Monthly trends retrieved'));
-  } catch (error) {
-    throw new ApiError(
-      503,
-      error || "Something went while getting Monthly trends !",
-    );
-  }
+  const data = await getMonthlyTrends({
+    userId: req.user.id,
+    year: req.query.year ? +req.query.year : undefined,
+  });
+  res.json(new ApiResponse(200, data, 'Monthly trends retrieved'));
 });
 
 export const fetchWeeklyTrends = asyncHandler(async (req, res) => {
-  try {
-
-    const data = await getWeeklyTrends({ days: req.query.days ? +req.query.days : 7 });
-    res.json(new ApiResponse(200, data, 'Trends retrieved'));
-
-  } catch (error) {
-    throw new ApiError(
-      500,
-      error || "Interal Server Error !! ",
-    );
-  }
+  const data = await getWeeklyTrends({
+    userId: req.user.id,
+    days: req.query.days ? +req.query.days : 7,
+  });
+  res.json(new ApiResponse(200, data, 'Trends retrieved'));
 });
 
 export const fetchRecentActivity = asyncHandler(async (req, res) => {
-  try {
-
-    const records = await getRecentActivity({ limit: req.query.limit ? +req.query.limit : 10 });
-    res.json(new ApiResponse(200, { records }, 'Recent activity retrieved'));
-
-  } catch (error) {
-    throw new ApiError(
-      505,
-      error || "Something went wrong while getting Recent Activity ",
-    );
-  }
+  const records = await getRecentActivity({
+    userId: req.user.id,
+    limit: req.query.limit ? +req.query.limit : 10,
+  });
+  res.json(new ApiResponse(200, { records }, 'Recent activity retrieved'));
 });
