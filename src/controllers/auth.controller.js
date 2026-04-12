@@ -34,54 +34,34 @@ export const refresh = asyncHandler(async (req, res) => {
 
 
 export const signup = asyncHandler(async (req, res) => {
-
     const result = signupSchema.safeParse(req.body);
     if (!result.success) throw new ApiError(400, 'Validation failed', formatValidationError(result.error));
-    try {
 
-        const { name, email, password, role } = result.data;
-        const user = await createUser({ name, email, password, role });
+    // role is NOT taken from result.data — createUser always assigns 'viewer'
+    const { name, email, password } = result.data;
+    const user = await createUser({ name, email, password });
 
-        const accessToken = jwttoken.sign({ id: user.id, email: user.email, role: user.role });
-        const refreshToken = await createRefreshToken(user.id);
-        cookies.set(res, accessToken, refreshToken);
+    const accessToken = jwttoken.sign({ id: user.id, email: user.email, role: user.role });
+    const refreshToken = await createRefreshToken(user.id);
+    cookies.set(res, accessToken, refreshToken);
 
-        logger.info(`signup: ${email}`);
-
-        return res.status(201)
-            .json(new ApiResponse(201, { user }, 'User registered successfully'));
-
-    } catch (error) {
-        throw new ApiError(
-            500,
-            error,
-        );
-    }
+    logger.info(`signup: ${email}`);
+    return res.status(201).json(new ApiResponse(201, { user }, 'User registered successfully'));
 });
 
 export const signin = asyncHandler(async (req, res) => {
     const result = signInSchema.safeParse(req.body);
     if (!result.success) throw new ApiError(400, 'Validation failed', formatValidationError(result.error));
-    try {
-        const { email, password } = result.data;
-        const user = await authenticateUser({ email, password });
 
-        const accessToken = jwttoken.sign({ id: user.id, email: user.email, role: user.role });
-        const refreshToken = await createRefreshToken(user.id);
-        cookies.set(res, accessToken, refreshToken);
+    const { email, password } = result.data;
+    const user = await authenticateUser({ email, password });
 
-        logger.info(`signin: ${email}`);
+    const accessToken = jwttoken.sign({ id: user.id, email: user.email, role: user.role });
+    const refreshToken = await createRefreshToken(user.id);
+    cookies.set(res, accessToken, refreshToken);
 
-        return res
-            .status(200)
-            .json(new ApiResponse(200, { user }, 'Signed in successfully'));
-
-    } catch (error) {
-        throw new ApiError(
-            501,
-            error || "Something went wrong ",
-        );
-    }
+    logger.info(`signin: ${email}`);
+    return res.status(200).json(new ApiResponse(200, { user }, 'Signed in successfully'));
 });
 
 
@@ -100,22 +80,9 @@ export const getMe = (req, res) => {
 
 
 export const changePassword = asyncHandler(async (req, res) => {
-    try {
+    const result = changePasswordSchema.safeParse(req.body);
+    if (!result.success) throw new ApiError(400, 'Validation failed', formatValidationError(result.error));
 
-        const result = changePasswordSchema.safeParse(req.body);
-        if (!result.success) throw new ApiError(400, 'Validation failed', formatValidationError(result.error));
-
-        await changeUserPassword(req.user.id, result.data.oldPassword, result.data.newPassword);
-        return res
-            .status(200)
-            .json(new ApiResponse(200, {}, 'Password changed successfully'));
-
-    } catch (error) {
-        throw new ApiError(
-            502,
-            error || "Something went wrong while changing password !",
-        );
-    }
+    await changeUserPassword(req.user.id, result.data.oldPassword, result.data.newPassword);
+    return res.status(200).json(new ApiResponse(200, {}, 'Password changed successfully'));
 });
-
-
