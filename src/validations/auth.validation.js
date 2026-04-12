@@ -5,9 +5,9 @@ export const signupSchema = z.object({
     name: z.string().min(2).max(255).trim(),
     email: z.string().email().max(255).toLowerCase().trim(),
     password: z.string().min(6).max(100),
-    // default role on registration is viewer; admin assigns analyst/admin later
-    role: z.enum(['admin', 'analyst', 'viewer']).default('viewer'),
-});
+// role is intentionally NOT accepted from the request body.
+    // All new accounts start as 'viewer'. An admin promotes them later via PUT /users/:id.
+    });
 
 export const signInSchema = z.object({
     email: z.string().email().toLowerCase().trim(),
