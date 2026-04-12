@@ -16,11 +16,18 @@ const safeFields = {
     updated_at: records.updated_at,
 };
 
-const buildFilter = ({ type, category, startDate, endDate }) => {
-    const conditions = [eq(records.is_deleted, false)];
+
+
+const buildFilter = ({ userId, type, category, startDate, endDate }) => {
+    const conditions = [
+        eq(records.is_deleted, false),
+        eq(records.created_by, userId),
+
+    ];
     if (type) conditions.push(eq(records.type, type));
     if (category) conditions.push(eq(records.category, category));
     if (startDate) conditions.push(gte(records.date, new Date(startDate)));
+
     if (endDate) {
         const end = new Date(endDate);
         end.setHours(23, 59, 59, 999);
@@ -29,8 +36,8 @@ const buildFilter = ({ type, category, startDate, endDate }) => {
     return and(...conditions);
 };
 
-export const getAllRecords = async ({ type, category, startDate, endDate, page = 1, limit = 20, sortBy = 'date', order = 'desc' }) => {
-    const where = buildFilter({ type, category, startDate, endDate });
+export const getAllRecords = async ({ userId, type, category, startDate, endDate, page = 1, limit = 20, sortBy = 'date', order = 'desc' }) => {
+    const where = buildFilter({ userId, type, category, startDate, endDate });
     const orderFn = order === 'asc' ? asc : desc;
     const col = sortBy === 'amount' ? records.amount : records.date;
 
@@ -50,11 +57,17 @@ export const getAllRecords = async ({ type, category, startDate, endDate, page =
     return { data: rows, total: count, page, limit };
 };
 
-export const getRecordById = async id => {
+
+export const getRecordById = async (id, userId) => {
     const [record] = await db
         .select(safeFields)
         .from(records)
-        .where(and(eq(records.id, id), eq(records.is_deleted, false)))
+        .where(and(
+            eq(records.id, id),
+            eq(records.is_deleted, false),
+            eq(records.created_by, userId),   // ownership check
+
+        ))
         .limit(1);
 
     if (!record) throw new ApiError(404, 'Record not found');
@@ -64,15 +77,22 @@ export const getRecordById = async id => {
 export const createRecord = async ({ amount, type, category, date, description, created_by }) => {
     const [record] = await db
         .insert(records)
-        .values({ amount: String(amount), type, category, date: date ? new Date(date) : new Date(), description, created_by })
+        .values({
+            amount: String(amount),
+            type,
+            category,
+            date: date ? new Date(date) : new Date(),
+            description,
+            created_by
+        })
         .returning(safeFields);
 
     logger.info(`Record created: id=${record.id} type=${type} amount=${amount}`);
     return record;
 };
 
-export const updateRecord = async (id, updates) => {
-    await getRecordById(id);
+export const updateRecord = async (id, userId, updates) => {
+    await getRecordById(id, userId); //  ownership enforced 
 
     const patch = {};
     if (updates.amount !== undefined) patch.amount = String(updates.amount);
@@ -92,13 +112,16 @@ export const updateRecord = async (id, updates) => {
     return updated;
 };
 
-export const softDeleteRecord = async id => {
-    await getRecordById(id);
+export const softDeleteRecord = async (id, userId) => {
+    await getRecordById(id, userId);// ownership enforced here
 
     await db
         .update(records)
         .set({ is_deleted: true, deleted_at: new Date(), updated_at: new Date() })
-        .where(eq(records.id, id));
+        .where(
+            eq(records.id, id),
+            eq(records.created_by, userId)
+        );
 
     logger.info(`Record soft-deleted: id=${id}`);
 };
