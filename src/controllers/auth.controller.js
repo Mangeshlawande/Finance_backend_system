@@ -86,3 +86,5 @@ export const changePassword = asyncHandler(async (req, res) => {
     await changeUserPassword(req.user.id, result.data.oldPassword, result.data.newPassword);
     return res.status(200).json(new ApiResponse(200, {}, 'Password changed successfully'));
 });
+
+
